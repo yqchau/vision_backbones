@@ -1,0 +1,6 @@
+# FILL THIS UP
+architecture: "resnet18" # select one from timm.list_models()
+dropout: 0.2
+label_smoothing: 0.1
+in_chans: 1 # default=3
+transfer_learning: true

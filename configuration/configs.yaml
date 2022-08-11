@@ -1,0 +1,28 @@
+defaults:
+  - datamodule: AlbuImageFolder
+  - models: timm_models
+  - optimizers: timm_opt
+  - schedulers: timm_sched
+  - callback: callback
+  - logger: logger
+  - trainer: training
+  - tester: testing
+  - _self_
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+# Self managed log file and configuration files.
+# overriding hydra default of changing working directory and logging configs.
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+  sweep: # use for multirun (overwrite hydra defaults, use pl to manage)
+    dir: .
+    subdir: .
+
+# override training parameters
+fast_dev_run: false #  use for debugging. bool | int, int for amount of times going through the batches, default: 1 (True).
+resume_full_training: false  # resume training with all states intact.
+resume_weights_training: false # used if you only want to resume from the weights of the model but keep all the other states according to config.
+checkpoint_path:
+seed: 42 # set to null if do not want to seed run.

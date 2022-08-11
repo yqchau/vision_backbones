@@ -1,0 +1,38 @@
+# Epoch, time and step can all be used to set for training, shortest amount of training time/progress takes precedence.
+# Thus, please take note to switch off time and step when not in used.
+num_epochs: 100 # max number of training epochs
+max_training_time: # format: DD:HH:MM:SS. Leave empty/null to switch off.
+max_steps: -1 # Put as -1 to switch off
+
+check_val_every_n_epoch: 1
+
+devices: 1  # number of gpu used
+accelerator: "gpu"
+precision: 16 # 32 | 16
+grad_clip_value: null # null disables gradient clipping
+grad_clip_algo: "norm" # 'value' | 'norm'
+
+# Distributed Data Parallel
+ddp: false
+sync_batchnorm: false
+
+# tuning configurations
+tune: false
+num_samples: 4
+n_trial_in_parallel: 4
+scheduler: true
+search_alg: false
+grace_period: 2
+search_space:
+  learning_rate:
+    _target_: ray.tune.loguniform
+    lower: 0.0001
+    upper: 1.
+  weight_decay:
+    _target_: ray.tune.loguniform
+    lower: 0.001
+    upper: 0.05
+  momentum:
+    _target_: ray.tune.uniform
+    lower: 0.
+    upper: 1.

@@ -1,0 +1,21 @@
+# Early Stopping Callback
+add_early_stop_callback: false # True | False
+monitor_metric: val_acc1 # val_acc1, val_acc5, train_loss, etc.
+mode: max # min or max
+e_stop_wait_n_epoch: 6  # if waiting for validation checks, please take note of `check_val_every_n_epoch` set in training.
+
+# Model Saving callback
+add_checkpoint_callback: true  # True | False
+save_last_model: true
+save_weights_only: false # use this if you know you are not resuming training with full state (e.g., hyperparams, optimisers, schedulers,etc)
+
+# Visualisation callback  (Visualise Failed Images + Confusion Matrix)
+# Set to  [0 | False]  if you do not want to on the "visualise failed images callback" that allows you to visualise failed images.
+# Set to a pre-defined number to only visualise up to your defined number.
+# Set to True if you want to visualise every failed images.
+# Note that this callback is tied to your validation set, so calculate accordingly to `check_val-every_n_epoch`.
+visualise_amount_failed_images: 20
+# set how many "visualise failed images callback" you want to ignore for initial rounds of validation checks
+# As of now, it is up to user to calculate the check_val_n_every_epoch against the num_epoch to figure out how many validation checks does not need the visualise callback.
+do_not_visualise_rounds:  0  # Put to 0 if you want to trigger the visualise callback at every validation check
+output_dir: './output' # path to directory to output the analysis

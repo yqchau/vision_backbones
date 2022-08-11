@@ -1,0 +1,9 @@
+# FILL THIS UP
+experiment_name: driving_data # name of logger directory
+log_every_n_steps: 1 # frequency of logging
+
+folder_path: "logs"
+experiment_version_tag:  # Default: null, Able to auto-tag (follow auto_version_tag_name) or idea : interpolate (hydra), ${now:%Y-%m-%d---%H-%M-%S}
+config_filename: "full_configuration.yaml" # full configuration file to save to logging directory.
+add_cloud_logger: false # default logging is tensorboard, can add cloud loggers (ex: wandb)
+auto_version_tag_name: auto_tag_version # the auto tagger searches the experiment directory and names the log as auto_tag_version_[0,1,2,..]

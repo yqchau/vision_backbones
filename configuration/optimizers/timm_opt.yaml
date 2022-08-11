@@ -1,0 +1,9 @@
+option: AdamW # auto (automatic optimizers search), SGD, Adam, AdamW, Nadam, Radam, AdamP, etc
+learning_rate: 0.001
+weight_decay: 0.0001
+momentum: 0.5
+
+# Auto Search Mode: Set how long you want to run. Minimum amount of training time/progress takes precedence in this setting
+max_step_count: -1 # number of steps for auto optimizer search (overrides training steps defined temporarily), set to -1 if you do not want to use.
+max_training_time:  # format: DD:HH:MM:SS. Leave empty/null to switch off.
+num_epochs: 2

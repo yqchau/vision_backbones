@@ -1,0 +1,22 @@
+sched: step # cosine, tanh, step, multistep, plateau, poly, null
+on_lr_warm_up: false # can choose to turn on/off warming up learning rate. On (true), Off (false).
+warmup_lr : 0.001
+warmup_epochs : 5
+decay_epochs : 30 # used for step
+decay_rate : 0.5
+lr_k_decay : 1.0
+min_lr : 0.0001
+patience_epochs : 10
+cooldown_epochs : 10
+lr_noise : null
+lr_noise_pct : 0.67
+lr_noise_std : 1
+seed : 42
+lr_cycle_mul : 1.0
+lr_cycle_decay : 0.1
+lr_cycle_limit : 1
+lr_eval_metric: "val_acc"  # used for plateau (currently, got bug in lightning side)
+
+
+
+# Note: Do not change this configuration file variable names. If you want to, refactoring is required in train.py. Schedulers creation depends on exactness of variable name.

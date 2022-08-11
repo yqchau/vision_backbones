@@ -1,0 +1,7 @@
+defaults:
+  - training.yaml
+  - _self_
+
+gpus: 4
+sync_batchnorm: true
+ddp: true

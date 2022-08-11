@@ -1,0 +1,23 @@
+--extra-index-url https://pypi.ngc.nvidia.com
+--find-links https://download.pytorch.org/whl/torch_stable.html
+
+albumentations
+bayesian-optimization==1.2.0
+hydra-core
+matplotlib
+numpy
+nvidia-pyindex
+nvidia-tensorrt
+nvsmi
+pandas
+pytorch-lightning==1.6.3
+ray
+ray[tune]
+scipy==1.7.0
+seaborn
+tensorboard
+timm==0.5.4
+torch==1.11.0+cu115
+torchmetrics
+torchvision==0.12.0+cu115
+wandb
