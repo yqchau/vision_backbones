@@ -1,6 +1,6 @@
 # Epoch, time and step can all be used to set for training, shortest amount of training time/progress takes precedence.
 # Thus, please take note to switch off time and step when not in used.
-num_epochs: 100 # max number of training epochs
+num_epochs: 10 # max number of training epochs
 max_training_time: # format: DD:HH:MM:SS. Leave empty/null to switch off.
 max_steps: -1 # Put as -1 to switch off
 

@@ -3,9 +3,9 @@ path: '/home/ychau001/driving_data' # path to dataset folder
 classes: 3 # number of classes in the dataset
 num_workers: 8 # number of cpu cores used
 
-batch_size: 256
-image_width: 224
-image_height: 224
+batch_size: 64
+image_width: 128
+image_height: 128
 mean:
   - 0
   - 0
@@ -25,8 +25,8 @@ train_transform:
   _target_: albumentations.Compose
   transforms:
     - _target_: albumentations.Resize
-      height: 224
-      width: 224
+      height: ${datamodule.image_height}
+      width: ${datamodule.image_width}
       interpolation: 2
     - _target_: albumentations.Normalize
       mean: ${datamodule.mean}
@@ -36,8 +36,8 @@ test_transform:
   _target_: albumentations.Compose
   transforms:
     - _target_: albumentations.Resize
-      height: 224
-      width: 224
+      height: ${datamodule.image_height}
+      width: ${datamodule.image_width}
       interpolation: 2
     - _target_: albumentations.Normalize
       mean: ${datamodule.mean}

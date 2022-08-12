@@ -170,3 +170,4 @@ cython_debug/
 #vscode:
 .vscode
 *.csv
+*.csv#

@@ -105,7 +105,7 @@ class TimmLightning(pl.LightningModule):
         self.eval_acc1(output, target)
         # self.eval_acc5(output, target)
 
-        self.log(f"{prefix}_loss", loss_val)
+        self.log(f"{prefix}_loss", loss_val.item())
         self.log(
             f"{prefix}_acc1",
             self.eval_acc1,
@@ -116,10 +116,10 @@ class TimmLightning(pl.LightningModule):
         # )
 
         return {
-            "loss": loss_val,
-            "images": images,
-            "target": target,
-            "outputs": output,
+            "loss": loss_val.item(),
+            "images": images.detach(),
+            "target": target.detach(),
+            "outputs": output.detach(),
             "path": path,
         }
 
@@ -214,7 +214,7 @@ class TimmLightning(pl.LightningModule):
         )
         df.to_csv(f"{self.output_dir}/mislabels.csv", index=False)
 
-        below_30_idx = failed_softmax_outputs.numpy() < 0.3
+        below_30_idx = failed_softmax_outputs.numpy() < 0.4
         mislabels_path = failed_paths[below_30_idx]
         mislabels_target = failed_targets[below_30_idx]
         mislabels_output = failed_outputs[below_30_idx]

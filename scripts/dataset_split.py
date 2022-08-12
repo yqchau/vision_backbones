@@ -55,9 +55,9 @@ def list_directory(dir, directory_only=False, files_only=False):
 
 
 if __name__ == "__main__":
-    dir = "/home/ml2/Desktop/sign_dataset"
+    dir = "/home/ychau001/driving_data/cleaned"
     classes = list_directory(dir, directory_only=True)
-    new_dir = "/home/ml2/Desktop/sign_dataset_cleaned"
+    new_dir = "/home/ychau001/driving_data/final"
 
     # create directory if does not exist
     if not os.path.exists(new_dir):
@@ -72,8 +72,8 @@ if __name__ == "__main__":
         paths = list_directory(object, files_only=True)
 
         # split into train, val and test
-        test_set, train_set = split(paths, n=40, seed=10)
-        val_set, train_set = split(train_set, n=40, seed=10)
+        test_set, train_set = split(paths, n=200, seed=10)
+        val_set, train_set = split(train_set, n=200, seed=10)
 
         # create dir for files to be saved
         os.makedirs(os.path.join(new_dir, "train", object_name))
