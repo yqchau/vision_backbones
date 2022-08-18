@@ -1,11 +1,11 @@
 # FILL THIS UP
-path: '/home/ychau001/driving_data' # path to dataset folder
+path: '/home/ychau001/driving_data/final' # path to dataset folder
 classes: 3 # number of classes in the dataset
 num_workers: 8 # number of cpu cores used
 
-batch_size: 64
-image_width: 128
-image_height: 128
+batch_size: 256
+image_width: 32
+image_height: 32
 mean:
   - 0
   - 0

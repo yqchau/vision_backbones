@@ -9,6 +9,7 @@ numpy
 nvidia-pyindex
 nvidia-tensorrt
 nvsmi
+nvsmi
 pandas
 pytorch-lightning==1.6.3
 ray

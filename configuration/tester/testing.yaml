@@ -1,13 +1,13 @@
 # FILL THIS UP
-dataset_path:
+dataset_path: '/home/ychau001/driving_data/final/test'
 
-architecture: "auto" # if auto, take from models/architecture
-checkpoint: "auto" # if auto, use pretrained weights from timm
-classes: 1000 # if auto, use classes from datamodule/classes
+architecture: "fcnn" # if auto, take from models/architecture
+checkpoint: '/home/ychau001/vision_backbones/logs/fcnn/auto_tag_version_2/checkpoints/best-results-epoch=13-val_acc1=0.80.ckpt' # if auto, use pretrained weights from timm
+classes: 3 # if auto, use classes from datamodule/classes
 trt_opt: true # tensorrt optimization
 batch_size: 1 # only batch_size=1 works for trt_opt
 measure_speed: true # calc speed in ms
-num_samples: 1000 # num_samples to average out when calculating inference speed
+num_samples: 100 # num_samples to average out when calculating inference speed
 fp16_mode: false
 
 test_transform:
@@ -22,3 +22,5 @@ test_transform:
       mean: ${datamodule.mean}
       std: ${datamodule.std_dev}
       inplace: true
+    - _target_: torchvision.transforms.Grayscale
+      num_output_channels: 1

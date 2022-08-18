@@ -1,5 +1,7 @@
 import timm
 
+from .torch_models import FCNN
+
 
 def create_timm_models(
     arch: str = "mobilenetv3_small_050",
@@ -9,6 +11,8 @@ def create_timm_models(
     final_pooling: str = "avg",
     in_chans: int = 3,
 ):
+    if arch == "fcnn":
+        return FCNN()
 
     model = timm.create_model(
         arch, pretrained=transfer_learning, drop_rate=drop_rate, in_chans=in_chans
@@ -18,3 +22,9 @@ def create_timm_models(
         model.reset_classifier(num_classes=classes, global_pool=final_pooling)
 
     return model
+
+
+if __name__ == "__main__":
+    model = create_timm_models(arch="fcnn")
+    print(model)
+    print(sum({p.data_ptr(): p.numel() for p in model.parameters()}.values()))

@@ -1,5 +1,5 @@
 # FILL THIS UP
-experiment_name: driving_data # name of logger directory
+experiment_name: fcnn # name of logger directory
 log_every_n_steps: 1 # frequency of logging
 
 folder_path: "logs"
