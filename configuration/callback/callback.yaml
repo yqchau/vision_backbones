@@ -17,5 +17,5 @@ save_weights_only: false # use this if you know you are not resuming training wi
 visualise_amount_failed_images: 20
 # set how many "visualise failed images callback" you want to ignore for initial rounds of validation checks
 # As of now, it is up to user to calculate the check_val_n_every_epoch against the num_epoch to figure out how many validation checks does not need the visualise callback.
-do_not_visualise_rounds:  0  # Put to 0 if you want to trigger the visualise callback at every validation check
+do_not_visualise_rounds:  1  # Put to 0 if you want to trigger the visualise callback at every validation check
 output_dir: './output' # path to directory to output the analysis

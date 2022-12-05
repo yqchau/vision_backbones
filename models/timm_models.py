@@ -1,6 +1,6 @@
 import timm
 
-from .torch_models import FCNN
+from .torch_models import CNN, FCNN
 
 
 def create_timm_models(
@@ -13,6 +13,8 @@ def create_timm_models(
 ):
     if arch == "fcnn":
         return FCNN()
+    elif arch == "cnn":
+        return CNN()
 
     model = timm.create_model(
         arch, pretrained=transfer_learning, drop_rate=drop_rate, in_chans=in_chans
@@ -25,6 +27,6 @@ def create_timm_models(
 
 
 if __name__ == "__main__":
-    model = create_timm_models(arch="fcnn")
+    model = create_timm_models(arch="cnn")
     print(model)
     print(sum({p.data_ptr(): p.numel() for p in model.parameters()}.values()))

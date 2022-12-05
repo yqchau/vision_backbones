@@ -1,11 +1,11 @@
 # FILL THIS UP
-path: '/home/ychau001/driving_data/final' # path to dataset folder
+path: '/home/ychau001/driving_data/64x64_34_0' # path to dataset folder
 classes: 3 # number of classes in the dataset
 num_workers: 8 # number of cpu cores used
 
-batch_size: 256
-image_width: 32
-image_height: 32
+batch_size: 512
+image_width: 64
+image_height: 64
 mean:
   - 0
   - 0
@@ -20,7 +20,6 @@ std_dev:
 probability_cutmix: 0. # Float (0->1.), set to 0 to off cutmix
 alpha_cutmix: 0.
 weighted_sampling: 1
-
 train_transform:
   _target_: albumentations.Compose
   transforms:

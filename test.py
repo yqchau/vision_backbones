@@ -38,6 +38,7 @@ def test(config):
         arch=arch,
         transfer_learning=transfer_learning,
         classes=classes,
+        in_chans=1,
     )
     if config["tester"]["checkpoint"] != "auto":
         state_dict = modify_state_dict(config["tester"]["checkpoint"])

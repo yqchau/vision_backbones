@@ -1,3 +1,4 @@
+import argparse
 import os
 import random
 import shutil
@@ -55,9 +56,14 @@ def list_directory(dir, directory_only=False, files_only=False):
 
 
 if __name__ == "__main__":
-    dir = "/home/ychau001/driving_data/cleaned"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--src")
+    parser.add_argument("--dst")
+
+    args = parser.parse_args()
+    dir = args.src
     classes = list_directory(dir, directory_only=True)
-    new_dir = "/home/ychau001/driving_data/final"
+    new_dir = args.dst
 
     # create directory if does not exist
     if not os.path.exists(new_dir):
@@ -72,8 +78,8 @@ if __name__ == "__main__":
         paths = list_directory(object, files_only=True)
 
         # split into train, val and test
-        test_set, train_set = split(paths, n=200, seed=10)
-        val_set, train_set = split(train_set, n=200, seed=10)
+        test_set, train_set = split(paths, n=400, seed=10)
+        val_set, train_set = split(train_set, n=400, seed=10)
 
         # create dir for files to be saved
         os.makedirs(os.path.join(new_dir, "train", object_name))

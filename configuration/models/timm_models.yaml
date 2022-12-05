@@ -1,6 +1,9 @@
 # FILL THIS UP
-architecture: "fcnn" # select one from timm.list_models()
+architecture: "mobilenetv2_100" # select one from timm.list_models()
 dropout: 0.2
-label_smoothing: 0.1
+label_smoothing: 0
 in_chans: 1 # default=3
-transfer_learning: true
+transfer_learning: false
+checkpoint: null
+
+# CNN PreTrained: '/home/ychau001/vision_backbones/logs/cnn_pretraining/auto_tag_version_0/checkpoints/best-results-epoch=2-val_acc1=0.12.ckpt'

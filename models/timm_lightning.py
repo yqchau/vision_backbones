@@ -1,15 +1,11 @@
 import math
-import os
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 import pytorch_lightning as pl
-import seaborn as sns
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchmetrics import Accuracy, ConfusionMatrix
+from torchmetrics import Accuracy
 
 
 class TimmLightning(pl.LightningModule):
@@ -123,109 +119,109 @@ class TimmLightning(pl.LightningModule):
             "path": path,
         }
 
-    def validation_epoch_end(self, outputs):
+    # def validation_epoch_end(self, outputs):
 
-        self.counter_rounds += 1
+    #     self.counter_rounds += 1
 
-        if (
-            self.visualise_amt is False
-            or self.visualise_amt == 0
-            or self.counter_rounds <= self.stop_rounds
-        ):  # Do not want to visualise (Off fail visualiser callback)
-            return
+    #     if (
+    #         self.visualise_amt is False
+    #         or self.visualise_amt == 0
+    #         or self.counter_rounds <= self.stop_rounds
+    #     ):  # Do not want to visualise (Off fail visualiser callback)
+    #         return
 
-        # Stack all the outputs
-        all_images = torch.tensor([])
-        all_targets = torch.tensor([])
-        all_outputs = torch.tensor([])
-        all_paths = []
+    #     # Stack all the outputs
+    #     all_images = torch.tensor([])
+    #     all_targets = torch.tensor([])
+    #     all_outputs = torch.tensor([])
+    #     all_paths = []
 
-        for out in outputs:
-            all_images = torch.cat((all_images, out["images"].cpu()), dim=0)
-            all_targets = torch.cat((all_targets, out["target"].cpu()), dim=0)
-            all_outputs = torch.cat((all_outputs, out["outputs"].cpu()), dim=0)
-            all_paths += out["path"]
-        softmax_outputs = torch.amax(self.softmax(all_outputs), dim=1)
-        all_targets = all_targets.type(torch.LongTensor)
-        all_outputs = torch.argmax(all_outputs, dim=1)
-        all_paths = np.array(all_paths)
+    #     for out in outputs:
+    #         all_images = torch.cat((all_images, out["images"].cpu()), dim=0)
+    #         all_targets = torch.cat((all_targets, out["target"].cpu()), dim=0)
+    #         all_outputs = torch.cat((all_outputs, out["outputs"].cpu()), dim=0)
+    #         all_paths += out["path"]
+    #     softmax_outputs = torch.amax(self.softmax(all_outputs), dim=1)
+    #     all_targets = all_targets.type(torch.LongTensor)
+    #     all_outputs = torch.argmax(all_outputs, dim=1)
+    #     all_paths = np.array(all_paths)
 
-        failed_prediction_idx = all_targets != all_outputs
-        failed_softmax_outputs = softmax_outputs[failed_prediction_idx]
-        failed_paths = all_paths[failed_prediction_idx]
-        failed_targets = all_targets[failed_prediction_idx]
-        failed_outputs = all_outputs[failed_prediction_idx]
+    #     failed_prediction_idx = all_targets != all_outputs
+    #     failed_softmax_outputs = softmax_outputs[failed_prediction_idx]
+    #     failed_paths = all_paths[failed_prediction_idx]
+    #     failed_targets = all_targets[failed_prediction_idx]
+    #     failed_outputs = all_outputs[failed_prediction_idx]
 
-        # Visualise failed predictions
-        fig = self.create_failed_figure(
-            images=all_images,
-            actual_targets=all_targets,
-            predicted_targets=all_outputs,
-            paths=all_paths,
-            max_failed_images_visualised=self.visualise_amt
-            if self.visualise_amt is not True
-            else None,  # give None as flag to visualise all.
-        )
-        self.logger.experiment.add_figure("Failed Predictions", fig, self.current_epoch)
+    #     # Visualise failed predictions
+    #     fig = self.create_failed_figure(
+    #         images=all_images,
+    #         actual_targets=all_targets,
+    #         predicted_targets=all_outputs,
+    #         paths=all_paths,
+    #         max_failed_images_visualised=self.visualise_amt
+    #         if self.visualise_amt is not True
+    #         else None,  # give None as flag to visualise all.
+    #     )
+    #     self.logger.experiment.add_figure("Failed Predictions", fig, self.current_epoch)
 
-        # Visualise confusion matrix too (along with visualisation of failed images)
-        num_classes = self.num_classes
-        labels = self.labels
+    #     # Visualise confusion matrix too (along with visualisation of failed images)
+    #     num_classes = self.num_classes
+    #     labels = self.labels
 
-        confmat = ConfusionMatrix(num_classes=num_classes)
-        confusion_matrix = confmat(all_outputs, all_targets)
-        per_class_acc = confusion_matrix.diag() / confusion_matrix.sum(1)
+    #     confmat = ConfusionMatrix(num_classes=num_classes)
+    #     confusion_matrix = confmat(all_outputs, all_targets)
+    #     per_class_acc = confusion_matrix.diag() / confusion_matrix.sum(1)
 
-        df_cm = pd.DataFrame(
-            confusion_matrix.numpy(),
-            index=labels,
-            columns=labels,
-        )
-        size = math.ceil(num_classes**0.5)
-        fig_size = max(10, size) + size
-        plt.figure(figsize=(fig_size, fig_size))
-        sns.set(font_scale=0.5)
-        fig_ = sns.heatmap(df_cm, annot=True, cmap="YlGnBu").get_figure()
-        self.logger.experiment.add_figure("Confusion Matrix", fig_, self.current_epoch)
+    #     df_cm = pd.DataFrame(
+    #         confusion_matrix.numpy(),
+    #         index=labels,
+    #         columns=labels,
+    #     )
+    #     size = math.ceil(num_classes**0.5)
+    #     fig_size = max(10, size) + size
+    #     plt.figure(figsize=(fig_size, fig_size))
+    #     sns.set(font_scale=0.5)
+    #     fig_ = sns.heatmap(df_cm, annot=True, cmap="YlGnBu").get_figure()
+    #     self.logger.experiment.add_figure("Confusion Matrix", fig_, self.current_epoch)
 
-        size = math.ceil(num_classes**0.5)
-        fig_size = max(10, size) + size
-        fig = plt.figure(figsize=(fig_size, fig_size))
-        plt.bar([i for i in range(self.num_classes)], per_class_acc)
-        plt.title("Accuracy By Class")
-        plt.xlabel("Class")
-        plt.ylabel("Accuracy")
-        self.logger.experiment.add_figure("Accuracy By Class", fig, self.current_epoch)
+    #     size = math.ceil(num_classes**0.5)
+    #     fig_size = max(10, size) + size
+    #     fig = plt.figure(figsize=(fig_size, fig_size))
+    #     plt.bar([i for i in range(self.num_classes)], per_class_acc)
+    #     plt.title("Accuracy By Class")
+    #     plt.xlabel("Class")
+    #     plt.ylabel("Accuracy")
+    #     self.logger.experiment.add_figure("Accuracy By Class", fig, self.current_epoch)
 
-        above_70_idx = failed_softmax_outputs.numpy() > 0.7
-        mislabels_path = failed_paths[above_70_idx]
-        mislabels_target = failed_targets[above_70_idx]
-        mislabels_output = failed_outputs[above_70_idx]
+    #     above_70_idx = failed_softmax_outputs.numpy() > 0.7
+    #     mislabels_path = failed_paths[above_70_idx]
+    #     mislabels_target = failed_targets[above_70_idx]
+    #     mislabels_output = failed_outputs[above_70_idx]
 
-        if not os.path.exists(self.output_dir):
-            os.mkdir(self.output_dir)
+    #     if not os.path.exists(self.output_dir):
+    #         os.mkdir(self.output_dir)
 
-        df = pd.DataFrame(
-            {
-                "label": [self.labels[i] for i in mislabels_target],
-                "predicted_label": [self.labels[i] for i in mislabels_output],
-                "path": mislabels_path,
-            }
-        )
-        df.to_csv(f"{self.output_dir}/mislabels.csv", index=False)
+    #     df = pd.DataFrame(
+    #         {
+    #             "label": [self.labels[i] for i in mislabels_target],
+    #             "predicted_label": [self.labels[i] for i in mislabels_output],
+    #             "path": mislabels_path,
+    #         }
+    #     )
+    #     df.to_csv(f"{self.output_dir}/mislabels.csv", index=False)
 
-        below_30_idx = failed_softmax_outputs.numpy() < 0.4
-        mislabels_path = failed_paths[below_30_idx]
-        mislabels_target = failed_targets[below_30_idx]
-        mislabels_output = failed_outputs[below_30_idx]
-        df = pd.DataFrame(
-            {
-                "label": [self.labels[i] for i in mislabels_target],
-                "predicted_label": [self.labels[i] for i in mislabels_output],
-                "path": mislabels_path,
-            }
-        )
-        df.to_csv(f"{self.output_dir}/off-class-labels.csv", index=False)
+    #     below_30_idx = failed_softmax_outputs.numpy() < 0.4
+    #     mislabels_path = failed_paths[below_30_idx]
+    #     mislabels_target = failed_targets[below_30_idx]
+    #     mislabels_output = failed_outputs[below_30_idx]
+    #     df = pd.DataFrame(
+    #         {
+    #             "label": [self.labels[i] for i in mislabels_target],
+    #             "predicted_label": [self.labels[i] for i in mislabels_output],
+    #             "path": mislabels_path,
+    #         }
+    #     )
+    #     df.to_csv(f"{self.output_dir}/off-class-labels.csv", index=False)
 
     def create_failed_figure(
         self,

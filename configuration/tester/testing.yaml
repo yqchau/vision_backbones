@@ -1,22 +1,24 @@
 # FILL THIS UP
-dataset_path: '/home/ychau001/driving_data/final/test'
+dataset_path: '/home/ychau001/driving_data/64x64_34_0/val'
 
-architecture: "fcnn" # if auto, take from models/architecture
-checkpoint: '/home/ychau001/vision_backbones/logs/fcnn/auto_tag_version_2/checkpoints/best-results-epoch=13-val_acc1=0.80.ckpt' # if auto, use pretrained weights from timm
+architecture: fcnn # if auto, take from models/architecture
+checkpoint: '/home/ychau001/vision_backbones/logs/fcnn_64_0.75/best.ckpt' # if auto, use pretrained weights from timm
 classes: 3 # if auto, use classes from datamodule/classes
-trt_opt: true # tensorrt optimization
+trt_opt: false # tensorrt optimization
 batch_size: 1 # only batch_size=1 works for trt_opt
-measure_speed: true # calc speed in ms
+measure_speed: false # calc speed in ms
 num_samples: 100 # num_samples to average out when calculating inference speed
-fp16_mode: false
+fp16_mode: true
 
 test_transform:
   _target_: torchvision.transforms.Compose
   transforms:
     - _target_: torchvision.transforms.Resize
       size:
-        - ${datamodule.image_height}
-        - ${datamodule.image_width}
+        # - ${datamodule.image_height}
+        # - ${datamodule.image_width}
+        - 64
+        - 64
     - _target_: torchvision.transforms.ToTensor
     - _target_: torchvision.transforms.Normalize
       mean: ${datamodule.mean}

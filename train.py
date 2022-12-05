@@ -2,6 +2,7 @@ import os
 
 import hydra
 import pytorch_lightning as pl
+import torch
 import yaml
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
@@ -102,6 +103,11 @@ def train(config, search=False, checkpoint_dir=None):
         "output_dir": config["callback"]["output_dir"],
     }
     model = TimmLightning(**model_kwargs)
+    if config["models"]["checkpoint"] is not None:
+        state_dict = torch.load(config["models"]["checkpoint"])["state_dict"]
+        # state_dict["model.fc.weight"] = torch.randn(3, 64)
+        # state_dict["model.fc.bias"] = torch.randn(3)
+        model.load_state_dict(state_dict)
 
     # Set up the callbacks:
     early_stop_callback = EarlyStopping(

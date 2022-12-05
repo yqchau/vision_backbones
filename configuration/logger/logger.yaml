@@ -1,5 +1,5 @@
 # FILL THIS UP
-experiment_name: fcnn # name of logger directory
+experiment_name: sota_64_0.75_1 # name of logger directory
 log_every_n_steps: 1 # frequency of logging
 
 folder_path: "logs"

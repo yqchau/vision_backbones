@@ -1,6 +1,6 @@
 # Epoch, time and step can all be used to set for training, shortest amount of training time/progress takes precedence.
 # Thus, please take note to switch off time and step when not in used.
-num_epochs: 10 # max number of training epochs
+num_epochs: 9 # max number of training epochs
 max_training_time: # format: DD:HH:MM:SS. Leave empty/null to switch off.
 max_steps: -1 # Put as -1 to switch off
 
@@ -18,20 +18,20 @@ sync_batchnorm: false
 
 # tuning configurations
 tune: false
-num_samples: 32
-n_trial_in_parallel: 1
+num_samples: 27
+n_trial_in_parallel: 2
 scheduler: true
 search_alg: false
-grace_period: 2
+grace_period: 1
 search_space:
   learning_rate:
     _target_: ray.tune.loguniform
     lower: 0.00001
-    upper: 0.001
+    upper: 0.01
   weight_decay:
     _target_: ray.tune.loguniform
     lower: 0.00001
-    upper: 0.001
+    upper: 0.01
   momentum:
     _target_: ray.tune.uniform
     lower: 0.

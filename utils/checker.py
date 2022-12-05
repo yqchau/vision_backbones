@@ -90,7 +90,7 @@ def sanity_check(cfg: DictConfig):
     models = cfg["models"]
     architecture = models["architecture"]
 
-    if architecture not in timm.list_models() and not architecture == "fcnn":
+    if architecture not in timm.list_models() and architecture not in ["fcnn", "cnn"]:
         raise SystemExit(
             f"[models/architecture]: {architecture}. Model must be one of timm.list_models()"
         )

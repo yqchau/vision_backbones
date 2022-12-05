@@ -2,7 +2,7 @@ sched: step # cosine, tanh, step, multistep, plateau, poly, null
 on_lr_warm_up: false # can choose to turn on/off warming up learning rate. On (true), Off (false).
 warmup_lr : 0.001
 warmup_epochs : 5
-decay_epochs : 5 # used for step
+decay_epochs : 10 # used for step
 decay_rate : 0.5
 lr_k_decay : 1.0
 min_lr : 0.0001
